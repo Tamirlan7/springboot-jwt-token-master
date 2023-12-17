@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=jwt_auth'
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5432'
