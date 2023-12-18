@@ -3,10 +3,15 @@ spring:
     compose:
       stop:
         command: down
+  jpa:
+
+    hibernate:
+      ddl-auto: create-drop
+
 
 jwt:
-  access-token-key: '{"kty": "oct", "k": "MEKCIovr7LkgBVclCJrY0ob7PPq9f2bUvZQdksNiD17dseHybaswEbFWXhKk0dN"}'
-  refresh-token-key: '{"kty": "oct", "k": "y5Z9GPBPa6P9LyiO7haVOu0If0BCMGfHqX48NNthPhDS4D39X4AzZzjGZ3E5e43"}'
+  access-token-key: '{"kty": "oct", "k": "3eb97465e14c1dafb0f287da7651b683272a4bf7d802dc46a8c1c8fa2386fcea"}'
+  refresh-token-key: '{"kty": "oct", "k": "d4434ef0590e8335919ebb0de4d6068c"}'
 #  m - minutes
 #  h - hours
 #  d - days

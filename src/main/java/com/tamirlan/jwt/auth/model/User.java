@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "created_at", nullable = false)
-    @CreationTimestamp()
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")

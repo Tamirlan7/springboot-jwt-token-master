@@ -23,7 +23,6 @@ import java.text.ParseException;
 
 @Configuration
 public class JwtConfig {
-
     @Bean
     public AccessTokenSerializer accessTokenSerializer(@Value("${jwt.access-token-key}") String secretKey) throws ParseException, KeyLengthException {
         return new DefaultAccessTokenSerializer(

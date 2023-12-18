@@ -1,16 +1,21 @@
 package com.tamirlan.jwt.auth.jwt.factory;
 
+import com.tamirlan.jwt.auth.jwt.model.AccessToken;
 import com.tamirlan.jwt.auth.jwt.model.RefreshToken;
+import com.tamirlan.jwt.auth.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+@Component
 public class RefreshTokenFactory {
-
     private final Duration tokenTtl;
 
     public RefreshTokenFactory(@Value("${jwt.refresh-token-expiration}") String refreshTokenExpiration) {
@@ -34,12 +39,39 @@ public class RefreshTokenFactory {
 
     public RefreshToken generate(Authentication authentication) {
         Instant now = Instant.now();
+        List<String> authorities = new ArrayList<>(authentication
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList());
+
+        authorities.add("JWT_REFRESH");
+
         return RefreshToken.builder()
                 .id(UUID.randomUUID())
-                .authorities(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
+                .authorities(authorities)
                 .issuedAt(now)
                 .expiresAt(now.plus(tokenTtl))
                 .userId(1L)
+                .build();
+    }
+
+    public RefreshToken generate(User user) {
+        Instant now = Instant.now();
+        List<String> authorities = new ArrayList<>(user
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList());
+
+        authorities.add("JWT_REFRESH");
+
+        return RefreshToken.builder()
+                .id(UUID.randomUUID())
+                .expiresAt(now.plus(tokenTtl))
+                .issuedAt(now)
+                .authorities(authorities)
+                .userId(user.getId())
                 .build();
     }
 

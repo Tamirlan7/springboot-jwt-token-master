@@ -1,6 +1,6 @@
 package com.tamirlan.jwt.auth.model;
 
 public enum Role {
-    ADMIN,
-    USER,
+    ROLE_ADMIN,
+    ROLE_USER,
 }

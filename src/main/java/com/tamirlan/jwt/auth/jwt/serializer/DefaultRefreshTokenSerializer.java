@@ -17,7 +17,7 @@ public class DefaultRefreshTokenSerializer implements RefreshTokenSerializer {
 
     private JWEAlgorithm jweAlgorithm = JWEAlgorithm.DIR;
 
-    private EncryptionMethod encryptionMethod = EncryptionMethod.A128GCM;
+    private EncryptionMethod encryptionMethod = EncryptionMethod.A192GCM;
 
     public DefaultRefreshTokenSerializer(JWEEncrypter jweEncrypter) {
         this.jweEncrypter = jweEncrypter;

@@ -2,11 +2,17 @@ package com.tamirlan.jwt.auth.jwt.factory;
 
 import com.tamirlan.jwt.auth.jwt.model.AccessToken;
 import com.tamirlan.jwt.auth.jwt.model.RefreshToken;
+import com.tamirlan.jwt.auth.model.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.UUID;
 
+@Component
 public class AccessTokenFactory {
     private final Duration tokenTtl;
 

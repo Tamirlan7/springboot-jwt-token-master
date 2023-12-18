@@ -1,5 +1,6 @@
 package com.tamirlan.jwt.auth.config;
 
+import com.tamirlan.jwt.auth.jwt.JwtAuthenticationConfigurer;
 import com.tamirlan.jwt.auth.model.Role;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,33 +23,28 @@ import java.util.Map;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthenticationConfigurer jwtAuthenticationConfigurer;
 
     @Bean
-    public SecurityFilterChain httpSecurity(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //noinspection removal
+        http.apply(jwtAuthenticationConfigurer);
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/user/**").hasAnyRole(Role.USER.name())
-                        .requestMatchers("/api/v1/admin/**").hasAnyRole(Role.ADMIN.name())
+                        .requestMatchers("/api/v1/user/**").hasAnyRole("USER")
+                        .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not authorized");
-                        }))
-                .userDetailsService(customUserDetailsService);
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not authorized")
+                        ));
+
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        String idForEncode = "bcrypt";
-        Map<String, PasswordEncoder> encoders = new HashMap<>();
-        encoders.put(idForEncode, new BCryptPasswordEncoder(8));
-        return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
 
 }
