@@ -15,7 +15,7 @@ Password: admin
 
 ## Authentication Process
 
-![authentication diagram](./authentication_diagram.jpg)
+![authentication diagram](./authentication_diagram.png)
 
 1. A client sends a request to /api/v1/user which is can be reached if you are authenticated and you have certain roles
 2. The request goes through several Security Filters by Spring Security
